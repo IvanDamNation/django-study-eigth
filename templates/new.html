@@ -1,0 +1,27 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+News list
+{% endblock title %}
+
+{% block content %}
+
+<h1>{{ new.title|censor }} {{ new.dateCreation|date:'d-m-Y h:i'}}</h1>
+<hr>
+
+
+<div align="left">
+    {% if user.is_authenticated %}
+    <h2>
+    Subscribe to this category ({{ new.get_category }}):
+        {% csrf_token %}
+        <button>
+            <a href="{{ request.get_full_path }}/subscribe">Subscribe</a>
+        </button>
+    </h2>
+    {% endif %}
+    <h3>{{ new.text|censor }}</h3>
+</div>
+
+{% endblock content %}
