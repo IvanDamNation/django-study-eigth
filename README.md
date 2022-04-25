@@ -1,21 +1,19 @@
-# django_study_sixth
+# django_study_seventh
 
-My sixth practice project in Django and HTML
+My seventh practice project in Django and HTML
 
-This is simple (not so already) project on Django.
+This is simple (actually, it's kinda complex for me) project on Django.
 
 Features:
-1) M2M connection subscription user to category
-2) Notification about news in category on email
-3) News list of week on email
-4) News add limitation per user
+*in progress*
 
 Please, install this packages in your virtual environment for proper work:
 1) django
 2) django-filter
 3) django-allauth
+4) django-apscheduler
 
-Made for sixth practice exercise in chapter "Django and backend" for SkillFactory
+Made for seventh practice exercise in chapter "Django and backend" for SkillFactory
 
 Superuser:
 
