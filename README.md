@@ -4,14 +4,7 @@ My seventh practice project in Django and HTML
 
 This is simple (actually, it's kinda complex for me) project on Django.
 
-Features:
-*in progress*
-
-Please, install this packages in your virtual environment for proper work:
-1) django
-2) django-filter
-3) django-allauth
-4) django-apscheduler
+Just made project work with celery-redis-docker stack
 
 Made for seventh practice exercise in chapter "Django and backend" for SkillFactory
 
