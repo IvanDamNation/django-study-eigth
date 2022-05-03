@@ -9,7 +9,7 @@ This is simple (actually, it's kinda complex for me) project on Django.
 Just made project work with celery-redis-docker stack
 
 
-Requirements: properly in~~~~stalled docker on your machine
+Requirements: properly installed docker on your machine
 
 
 
