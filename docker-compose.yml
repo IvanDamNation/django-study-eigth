@@ -17,7 +17,7 @@ services:
       - redis
   celery:
     build: .
-    command: celery -A NewsPaper worker -l INFO
+    command: celery -A NewsPaper worker -l INFO -B
     volumes:
       - .:/usr/src/app
     depends_on:
