@@ -2,14 +2,24 @@
 
 My seventh practice project in Django and HTML
 
+
 This is simple (actually, it's kinda complex for me) project on Django.
+
 
 Just made project work with celery-redis-docker stack
 
-Requirements: properly installed docker on your machine
 
-To try this use command in project root directory:
+Requirements: properly in~~~~stalled docker on your machine
+
+
+
+For starting server use command in project root directory:
 *docker-compose up*
+
+
+
+After properly started cluster of three containers (Django, Redis and Celery) you can access project web-interface on localhost address with standard port 8000 (127.0.0.1:8000).
+
 
 Made for seventh practice exercise in chapter "Django and backend" for SkillFactory
 
