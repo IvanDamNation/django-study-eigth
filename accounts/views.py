@@ -46,16 +46,16 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 @login_required
 def add_subscribe(request, pk):
     user = request.user
-    category_object = PostCategory.objects.get(postThrough=pk)
-    category_object_name = category_object.categoryThrough
-    category = Category.objects.get(name=category_object_name)
+    #  category_object = PostCategory.objects.get(postThrough=pk)
+    #  category_object_name = category_object.categoryThrough
+    category = Category.objects.get(id=pk)
     subscribe = SubscribersToCategory(subscriber=user, categoryThrough=category)
     subscribe.save()
     html_content = render_to_string(
         'accounts_email_make_subscription.html',
         {
             'user': user,
-            'category_object_name': category_object_name
+            'category_object_name': category.name
         }
     )
     mail = EmailMultiAlternatives(
@@ -67,7 +67,7 @@ def add_subscribe(request, pk):
     mail.attach_alternative(html_content, 'text/html')
     mail.send()
 
-    return redirect(f'/news/{pk}')
+    return redirect(f'/news/')
 
 
 def test_mail(request):

@@ -14,11 +14,13 @@ News list
 <div align="left">
     {% if user.is_authenticated %}
     <h2>
-    Subscribe to this category ({{ new.get_category }}):
+    Subscribe to this category:
+        {% for category in new.postCategory.all %}
         {% csrf_token %}
         <button>
-            <a href="{{ request.get_full_path }}/subscribe">Subscribe</a>
+            <a href="{% url 'subscribe' category.id %}">{{ category }}</a>
         </button>
+        {% endfor %}
     </h2>
     {% endif %}
     <h3>{{ new.text|censor }}</h3>

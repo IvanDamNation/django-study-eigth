@@ -11,7 +11,7 @@ from news.models import PostCategory
 @receiver(m2m_changed, sender=PostCategory)
 def send_post(sender, instance, action, **kwargs):
     if action == 'post_add':
-        categories = instance.category.all()
+        categories = instance.postCategory.all()
         users = User.objects.filter(category__in=categories).exclude(email='').distinct()
         site = Site.objects.get_current()
         for user in users:
