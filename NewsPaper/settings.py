@@ -194,3 +194,58 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'myformatter_1': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'myformatter_2': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'myformatter_3': {
+            'format': '{asctime} {levelname} {message} {exc_info}',
+            'datetime': '%Y.%m.%d %H:%M:%S',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console_1': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'myformatter_2',
+            'filters': ['require_debug_true'],
+        },
+        'console_2': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'myformatter_1',
+            'filters': ['require_debug_true'],
+        },
+        'console_3': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'myformatter_3',
+            'filters': ['require_debug_true'],
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['console_1', 'console_2', 'console_3'],
+            'level': 'DEBUG',
+        },
+    },
+
+}
