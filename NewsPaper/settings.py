@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-o%1-l)y=rtsbm&$xirhe)ffzu#1q0*fify_ep46yanb)ka)pxs
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
-
 
 # Application definition
 
@@ -103,7 +101,6 @@ LOGIN_REDIRECT_URL = '/news/'
 
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -113,7 +110,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -133,7 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -144,7 +139,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -198,54 +192,113 @@ CACHES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'style': '{',
     'formatters': {
-        'myformatter_1': {
-            'format': '{asctime} {levelname} {message}',
-            'datetime': '%Y.%m.%d %H:%M:%S',
-            'style': '{',
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
         },
-        'myformatter_2': {
-            'format': '{asctime} {levelname} {message} {pathname}',
-            'datetime': '%Y.%m.%d %H:%M:%S',
-            'style': '{',
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(pathname)s %(module)s %(process)d %(thread)d %(message)s'
         },
-        'myformatter_3': {
-            'format': '{asctime} {levelname} {message} {exc_info}',
-            'datetime': '%Y.%m.%d %H:%M:%S',
-            'style': '{',
+        'errorformat': {
+            'format': '%(levelname)s %(asctime)s %(pathname)s %(module)s %(process)d %(thread)d %(message)s %(exc_info)s'
+        },
+        'infoformat': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+        'error_file_format': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s %(exc_info)s'
+        },
+        'securityformat': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+        'mailformat': {
+            'format': '%(levelname)s %(asctime)s %(message)s %(pathname)s'
         },
     },
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
     },
     'handlers': {
-        'console_1': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'console_warning': {
             'level': 'WARNING',
-            'class': 'logging.StreamHandler',
-            'formatter': 'myformatter_2',
             'filters': ['require_debug_true'],
-        },
-        'console_2': {
-            'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'myformatter_1',
-            'filters': ['require_debug_true'],
+            'formatter': 'verbose'
         },
-        'console_3': {
+        'console_error': {
             'level': 'ERROR',
-            'class': 'logging.StreamHandler',
-            'formatter': 'myformatter_3',
             'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
+        'file_info': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'infoformat',
+        },
+        'file_error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+            'formatter': 'error_file_format',
+        },
+        'file_security': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'securityformat',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'mailformat',
+        }
     },
-
     'loggers': {
         'django': {
-            'handlers': ['console_1', 'console_2', 'console_3'],
+            'handlers': ['console', 'console_warning', 'console_error', 'file_info'],
             'level': 'DEBUG',
+            'propagate': True,
         },
-    },
-
+        'django.request': {
+            'handlers': ['mail_admins', 'file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db_backends': {
+            'handlers': ['file_error'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['file_security'],
+            'level': 'INFO',
+            'propagate': False,
+        }
+    }
 }
