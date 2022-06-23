@@ -2,26 +2,54 @@ version: "3.10"
 
 services:
   django:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: django
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8018
     volumes:
       - .:/usr/src/app
     ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8018:8018"
     environment:
       - DEBUG=1
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
       - CELERY_BROKER=redis://redis:6379/0
     depends_on:
       - redis
-  celery:
-    build: .
+    networks:
+      my_new_net:
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: celery -A NewsPaper worker -l INFO -B
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/
     volumes:
       - .:/usr/src/app
     depends_on:
       - django
       - redis
+    networks:
+      my_new_net:
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: celery:3.1
+    command: celery -A NewsPaper worker -l INFO
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/
+    depends_on:
+      - redis
+    restart: always
+    networks:
+      my_new_net:
   redis:
     image: "redis:alpine"
+    networks:
+      my_new_net:
+
+networks:
+  my_new_net:
