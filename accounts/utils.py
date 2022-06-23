@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
@@ -11,10 +11,10 @@ def news_sender():
     for category in Category.objects.all():
 
         # List for news + paths
-        news_from_each_category = []
+        news_from_each_category = list()
 
         # Check week number
-        week_number_last = datetime.now().isocalendar()[1] - 1
+        week_number_last = timezone.now().isocalendar()[1] - 1
 
         # Get pk and place in filter. Also filter with week number
         for news in Post.objects.filter(category_id=category.id,
@@ -43,10 +43,13 @@ def news_sender():
         for subscriber in subscribers:
             # Another kind of frontend
             html_content = render_to_string(
-                'sender.html', {'user': subscriber,
-                                'text': news_from_each_category,
-                                'category_name': category.name,
-                                'week_number_last': week_number_last})
+                'sender.html', {
+                    'user': subscriber,
+                    'text': news_from_each_category,
+                    'category_name': category.name,
+                    'week_number_last': week_number_last
+                }
+            )
 
             msg = EmailMultiAlternatives(
                 subject=f'Hello, {subscriber.username}, news of the week in your feed!',
@@ -55,9 +58,5 @@ def news_sender():
             )
 
             msg.attach_alternative(html_content, 'text/html')
-
-            # For testing purposes
-            # print(html_content)
-
             # Uncomment this to work
             msg.send()

@@ -14,16 +14,6 @@ from django_apscheduler import util
 logger = logging.getLogger(__name__)
 
 
-# Weekly subscription email sending job
-
-
-
-# def my_job():
-#     pass
-#     # Your job processing logic here...
-#     print('Hello from job!')
-
-
 # The `close_old_connections` decorator ensures that database connections, that have become
 # unusable or are obsolete, are closed before and after your job has run. You should use it
 # to wrap any jobs that you schedule that access the Django database in any way.
@@ -46,15 +36,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
-        #
-        # scheduler.add_job(
-        #     news_sender,
-        #     trigger=CronTrigger(second="*/10"),  # Every 10 seconds
-        #     id="news_sender",  # The `id` assigned to each job MUST be unique
-        #     max_instances=1,
-        #     replace_existing=True,
-        # )
-        logger.info("Added job 'news_sender'.")
 
         scheduler.add_job(
             delete_old_job_executions,
