@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 
 from .models import Post, Category, Author
 from .filters import PostFilter

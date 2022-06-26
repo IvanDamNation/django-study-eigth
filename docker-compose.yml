@@ -6,14 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: django
-    command: python manage.py runserver 0.0.0.0:8018
+    command: python manage.py runserver 0.0.0.0:${DJANGO_PORT}
     volumes:
       - .:/usr/src/app
     ports:
-      - "127.0.0.1:8018:8018"
+      - "127.0.0.1:${DOCKER_EXPOSE_PORT}:${DJANGO_PORT}"
+    env_file:
+      - .env
     environment:
       - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
       - CELERY_BROKER=redis://redis:6379/0
     depends_on:
       - redis
@@ -26,6 +27,8 @@ services:
     command: celery -A NewsPaper worker -l INFO -B
     environment:
       CELERY_BROKER_URL: redis://redis:6379/
+    env_file:
+      - .env
     volumes:
       - .:/usr/src/app
     depends_on:
@@ -44,6 +47,8 @@ services:
     depends_on:
       - redis
     restart: always
+    env_file:
+      - .env
     networks:
       my_new_net:
   redis:

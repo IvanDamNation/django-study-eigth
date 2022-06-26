@@ -25,7 +25,4 @@ urlpatterns = [
 
     path('test/', test_mail),
 
-    # __reserved(may conflict with same path in news.urls)
-    # path('<int:pk>/subscribe/', add_subscribe, name='subscribe'),
-
 ]
